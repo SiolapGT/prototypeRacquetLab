@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RacquetLab ID — Komparasi Raket Tenis 2010-2026 & AI Spec Finder</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter, Space Grotesk, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        tennis: {
+                            lime: '#ccff00',
+                            limeDark: '#a3e635',
+                            court: '#0ea5e9',
+                            clay: '#f97316',
+                            slateDark: '#070b14',
+                            cardDark: '#111827',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #070b14;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+        /* Court grid background pattern */
+        .bg-court-pattern {
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(204, 255, 0, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 85% 25%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1120;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+        /* Neon pulse effect */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(204, 255, 0, 0.25); }
+            50% { box-shadow: 0 0 28px rgba(204, 255, 0, 0.5); }
+        }
+        .neon-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+        /* Range Input Styling */
+        input[type=range] {
+            accent-color: #ccff00;
+        }
+    </style>
+</head>
+<body class="bg-court-pattern min-h-screen flex flex-col selection:bg-tennis-lime selection:text-slate-950">
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-slate-950/85 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-tennis-lime flex items-center justify-center text-slate-950 font-display font-bold text-xl shadow-lg shadow-tennis-lime/20 group-hover:scale-105 transition-transform">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="15" cy="9" r="6"></circle>
+                        <path d="M10.7 13.3 4 20"></path>
+                        <path d="m12 6 6 6"></path>
+                        <path d="m15 3 6 6"></path>
+                        <path d="m9 9 6 6"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-bold text-lg tracking-tight text-white">RacquetLab<span class="text-tennis-lime">.ID</span></span>
+                        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded-full bg-slate-800 text-tennis-lime border border-tennis-lime/30">2010–2026 DB</span>
+                    </div>
+                    <p class="text-xs text-slate-400 hidden sm:block">Platform Komparasi & AI Spec Finder Raket Tenis</p>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
+                <a href="#ai-search-section" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition flex items-center gap-1.5">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-tennis-lime"></i>
+                    AI Spec Finder
+                </a>
+                <a href="#catalog-section" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-slate-800/70 transition flex items-center gap-1.5">
+                    <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-sky-400"></i>
+                    Katalog Raket (<span id="navCatalogCount">14</span>)
+                </a>
+                <a href="#comparison-section" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-950 bg-tennis-lime hover:bg-tennis-limeDark transition font-semibold flex items-center gap-1.5">
+                    <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+                    Meja Komparasi (<span id="navCompareCount">3</span>/4)
+                </a>
+            </nav>
+
+            <!-- Quick Action Button Mobile / Add Custom Racket Modal Trigger -->
+            <div class="flex items-center gap-2">
+                <button onclick="openCustomRacketModal()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700/80 text-xs font-medium flex items-center gap-1.5 transition">
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-tennis-lime"></i>
+                    <span class="hidden sm:inline">Input Manual</span>
+                </button>
+                <a href="#comparison-section" class="md:hidden px-3 py-2 rounded-xl bg-tennis-lime text-slate-950 font-semibold text-xs flex items-center gap-1">
+                    <i data-lucide="scale" class="w-4 h-4"></i>
+                    <span id="mobileCompareCount">3</span>/4
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-12 pb-32">
+
+        <!-- HERO & AI SEARCH SECTION -->
+        <section id="ai-search-section" class="relative rounded-3xl bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-slate-950 border border-slate-800/90 p-6 sm:p-10 overflow-hidden shadow-2xl">
+            <!-- Decorative Glow -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-tennis-lime/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-4xl mx-auto text-center space-y-4">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-tennis-lime/10 border border-tennis-lime/30 text-tennis-lime text-xs font-medium">
+                    <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                    <span>Didukung Gemini AI • Database Raket 2010 hingga 2026</span>
+                </div>
+
+                <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
+                    Bandingkan Spesifikasi Raket Tenis <br class="hidden sm:inline" />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-tennis-lime via-lime-300 to-sky-400">Lintas Generasi (2010–2026)</span>
+                </h1>
+
+                <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+                    Bandingkan <strong class="text-slate-200">Merek, Berat, Headsize, Tipe Raket, Stiffness (RA), hingga Swingweight</strong>. Tidak menemukan seri raket tertentu di katalog? Gunakan pencarian berbasis AI di bawah untuk menarik data spesifikasi raket apa pun dari tahun 2010–2026.
+                </p>
+
+                <!-- AI Search Input Box -->
+                <div class="pt-4">
+                    <form id="aiSearchForm" onsubmit="handleAISearch(event)" class="relative max-w-3xl mx-auto">
+                        <div class="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-950/90 p-2 rounded-2xl border-2 border-slate-700/80 focus-within:border-tennis-lime transition shadow-inner">
+                            <div class="flex items-center gap-3 pl-3 flex-1">
+                                <i data-lucide="sparkles" class="w-5 h-5 text-tennis-lime shrink-0"></i>
+                                <input 
+                                    type="text" 
+                                    id="aiSearchInput"
+                                    placeholder="Ketik nama raket spesifik atau kriteria (mis: 'Raket ramah tennis elbow di bawah 295g tahun 2018-2025' atau 'Head Radical MP 2012')..."
+                                    class="w-full bg-transparent text-sm sm:text-base text-white placeholder-slate-500 focus:outline-none py-2"
+                                />
+                            </div>
+                            <button 
+                                type="submit" 
+                                id="aiSearchBtn"
+                                class="px-6 py-3 rounded-xl bg-tennis-lime hover:bg-tennis-limeDark text-slate-950 font-display font-bold text-sm transition flex items-center justify-center gap-2 shrink-0 shadow-lg shadow-tennis-lime/20 cursor-pointer"
+                            >
+                                <i data-lucide="wand-2" class="w-4 h-4"></i>
+                                <span>Cari dengan AI</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Quick AI Prompt Chips -->
+                    <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
+                        <span class="text-xs text-slate-400 mr-1 flex items-center gap-1">
+                            <i data-lucide="zap" class="w-3.5 h-3.5 text-tennis-lime"></i> Contoh Pencarian AI:
+                        </span>
+                        <button onclick="triggerQuickAISearch('Cari raket tahun 2015-2025 yang ramah untuk tennis elbow (RA rendah) di bawah 295 gram')" class="text-xs px-3 py-1.5 rounded-full bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-tennis-lime border border-slate-700 transition">
+                            "Ramah tennis elbow &lt; 295g (2015-2025)"
+                        </button>
+                        <button onclick="triggerQuickAISearch('Head Radical MP 2012, Babolat Pure Drive 2015, dan Wilson Blade 98 v8 2021')" class="text-xs px-3 py-1.5 rounded-full bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-tennis-lime border border-slate-700 transition">
+                            "Head Radical MP 2012 vs Pure Drive 2015"
+                        </button>
+                        <button onclick="triggerQuickAISearch('Raket tenis rilis 2024-2026 terbaik untuk spin agresif dari baseline')" class="text-xs px-3 py-1.5 rounded-full bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-tennis-lime border border-slate-700 transition">
+                            "Raket Spin Terbaik 2024–2026"
+                        </button>
+                        <button onclick="triggerQuickAISearch('Raket klasik kontrol tinggi headsize 95-98 sq in antara tahun 2010 sampai 2016')" class="text-xs px-3 py-1.5 rounded-full bg-slate-800/80 hover:bg-slate-800 text-slate-300 hover:text-tennis-lime border border-slate-700 transition">
+                            "Raket Kontrol Klasik 2010–2016"
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Search Loading State -->
+            <div id="aiSearchLoading" class="hidden mt-8 max-w-3xl mx-auto p-6 rounded-2xl bg-slate-950/80 border border-tennis-lime/40 text-center space-y-3">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-tennis-lime/10 text-tennis-lime animate-pulse">
+                    <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
+                </div>
+                <h3 class="font-display font-bold text-base text-white">Gemini AI Sedang Memindai Spesifikasi Raket (2010–2026)...</h3>
+                <p class="text-xs text-slate-400">Mengekstrak data berat unstrung, ukuran kepala (headsize), kekakuan RA, swingweight, dan karakter permainan.</p>
+            </div>
+
+            <!-- AI Search Results Container -->
+            <div id="aiSearchResultsContainer" class="hidden mt-8 pt-6 border-t border-slate-800/80 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-tennis-lime animate-ping"></span>
+                        <h3 class="font-display font-bold text-lg text-white">Hasil Pencarian & Ekstraksi Spesifikasi AI</h3>
+                        <span id="aiResultsBadge" class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-tennis-lime/15 text-tennis-lime border border-tennis-lime/30">0 Raket</span>
+                    </div>
+                    <button onclick="closeAISearchResults()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 self-start sm:self-auto">
+                        <i data-lucide="x" class="w-4 h-4"></i> Tutup Hasil AI
+                    </button>
+                </div>
+                <p id="aiSearchSummaryText" class="text-xs sm:text-sm text-slate-300 bg-slate-950/60 p-3.5 rounded-xl border border-slate-800"></p>
+                
+                <!-- Grid of AI Found Rackets -->
+                <div id="aiSearchResultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- SIDE-BY-SIDE INTERACTIVE COMPARISON SECTION -->
+        <section id="comparison-section" class="space-y-6 scroll-mt-20">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-slate-800 pb-5">
+                <div>
+                    <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-tennis-lime mb-1">
+                        <i data-lucide="Sliders" class="w-3.5 h-3.5"></i>
+                        <span>Head-to-Head Spec Matrix</span>
+                    </div>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Komparasi Raket Side-by-Side</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                        Bandingkan hingga <strong class="text-white">4 raket sekaligus</strong> dari segi Merek, Berat, Headsize, Tipe Raket, dan metrik biomekanika Pro.
+                    </p>
+                </div>
+
+                <!-- Quick Add Dropdown + AI Verdict Button + Reset -->
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <div class="relative">
+                        <select id="quickAddCompareSelect" onchange="handleQuickAddSelect(this)" class="bg-slate-900 hover:bg-slate-800 text-xs sm:text-sm text-slate-200 rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-tennis-lime transition pr-8">
+                            <option value="">+ Tambah Cepat ke Komparasi...</option>
+                        </select>
+                    </div>
+
+                    <button onclick="generateAIComparisonVerdict()" id="btnAiVerdict" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-tennis-lime to-lime-400 hover:from-lime-300 hover:to-tennis-lime text-slate-950 font-display font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-tennis-lime/20 transition cursor-pointer">
+                        <i data-lucide="bot" class="w-4 h-4"></i>
+                        <span>Analisis Komparasi AI</span>
+                    </button>
+
+                    <button onclick="clearComparison()" class="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-rose-950/60 text-slate-300 hover:text-rose-300 border border-slate-800 hover:border-rose-800/60 text-xs font-medium transition flex items-center gap-1.5">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        <span>Kosongkan</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Head-to-Head Verdict Box (Hidden until triggered) -->
+            <div id="aiVerdictContainer" class="hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900/95 to-sky-950/30 border border-tennis-lime/40 p-5 sm:p-6 shadow-xl space-y-4">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-tennis-lime/15 border border-tennis-lime/40 flex items-center justify-center text-tennis-lime shrink-0">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-display font-bold text-base sm:text-lg text-white">Verdict & Rekomendasi Biomekanika AI</h3>
+                            <p class="text-xs text-slate-400">Analisis mendalam berdasarkan perbandingan Berat, Headsize, Stiffness (RA), dan Swingweight</p>
+                        </div>
+                    </div>
+                    <button onclick="document.getElementById('aiVerdictContainer').classList.add('hidden')" class="text-slate-400 hover:text-white p-1">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div id="aiVerdictContent" class="text-sm text-slate-200 leading-relaxed space-y-3"></div>
+            </div>
+
+            <!-- Empty State if 0 rackets selected -->
+            <div id="emptyCompareState" class="hidden rounded-3xl bg-slate-900/60 border border-dashed border-slate-700 p-10 text-center space-y-4">
+                <div class="w-14 h-14 rounded-2xl bg-slate-800/80 border border-slate-700 mx-auto flex items-center justify-center text-slate-400">
+                    <i data-lucide="scale" class="w-7 h-7"></i>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="font-display font-bold text-lg text-white">Belum Ada Raket di Meja Komparasi</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 max-w-md mx-auto">Pilih minimal 2 hingga 4 raket dari katalog di bawah atau gunakan dropdown di atas untuk melihat perbandingan spesifikasi secara berdampingan.</p>
+                </div>
+                <div class="pt-2">
+                    <button onclick="loadDefaultComparisonPreset()" class="px-4 py-2 rounded-xl bg-tennis-lime text-slate-950 font-semibold text-xs hover:bg-tennis-limeDark transition">
+                        Muat Preset Populer (Ezone 100 2025 vs Clash 103 vs Pure Aero)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Comparison Cards & Visual Bars Matrix -->
+            <div id="comparisonMatrixWrapper" class="space-y-6">
+                <!-- Dynamic Columns Grid -->
+                <div id="comparisonGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+
+                <!-- Visual Telemetry & Radar Comparison Panel -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-slate-900/80 border border-slate-800/90 rounded-3xl p-5 sm:p-7">
+                    <!-- Radar Chart (5 Axes: Power, Control, Spin, Comfort, Maneuverability) -->
+                    <div class="lg:col-span-5 flex flex-col justify-between bg-slate-950/70 rounded-2xl p-5 border border-slate-800/80">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                                    <i data-lucide="radar" class="w-4 h-4 text-tennis-lime"></i>
+                                    <span>Peta Karakter Permainan</span>
+                                </h3>
+                                <span class="text-[11px] font-mono text-slate-400">Skala 0–100</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-4">Overlay profil performa berdasarkan kombinasi headsize, kekakuan RA, pola senar, dan distribusi berat.</p>
+                        </div>
+
+                        <div id="radarChartContainer" class="w-full aspect-square max-w-[300px] mx-auto flex items-center justify-center">
+                            <!-- Injected by JS SVG Radar -->
+                        </div>
+
+                        <div id="radarLegend" class="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs"></div>
+                    </div>
+
+                    <!-- Horizontal Bar Telemetry Comparison -->
+                    <div class="lg:col-span-7 flex flex-col justify-between space-y-5">
+                        <div>
+                            <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
+                                <i data-lucide="bar-chart-horizontal" class="w-4 h-4 text-sky-400"></i>
+                                <span>Perbandingan Visual Metrik Utama & Pro</span>
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Indikator visual perbedaan Berat Tanpa Senar, Ukuran Kepala (Headsize), Stiffness (RA), dan Swingweight.</p>
+                        </div>
+
+                        <div id="metricBarsContainer" class="space-y-5 flex-1 flex flex-col justify-center">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+
+                        <!-- Quick Biomechanical Guide Legend -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-800/80 text-[11px] text-slate-400">
+                            <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+                                <span class="text-tennis-lime font-semibold block">Berat & Swingweight</span>
+                                Makin tinggi = stabil & bertenaga, makin rendah = mudah diayun cepat (manuver).
+                            </div>
+                            <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+                                <span class="text-sky-400 font-semibold block">Headsize (sq. in.)</span>
+                                &lt;98" fokus presisi/kontrol; 100" serbabisa (tweener); &gt;102" sweetspot besar & power.
+                            </div>
+                            <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+                                <span class="text-emerald-400 font-semibold block">Stiffness / Kekakuan (RA)</span>
+                                &lt;62 RA lembut & ramah lengan (tennis elbow); &gt;67 RA kaku & pantulan bola eksplosif.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATALOG & FILTER SECTION (2010 - 2026) -->
+        <section id="catalog-section" class="space-y-6 scroll-mt-20">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800 pb-5">
+                <div>
+                    <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-sky-400 mb-1">
+                        <i data-lucide="database" class="w-3.5 h-3.5"></i>
+                        <span>Eksplorasi Katalog 2010–2026</span>
+                    </div>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-white">Katalog Raket Tenis & Filter Spesifikasi</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                        Saring berdasarkan <strong class="text-slate-200">Merek, Rentang Tahun (2010–2026), Berat, Headsize,</strong> dan <strong class="text-slate-200">Tipe Raket</strong>.
+                    </p>
+                </div>
+
+                <!-- Preset Filter Buttons for Fast Testing -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs text-slate-400">Filter Cepat:</span>
+                    <button onclick="applyPresetFilter('all')" class="text-xs px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+                        Semua Raket
+                    </button>
+                    <button onclick="applyPresetFilter('arm-friendly')" class="text-xs px-3 py-1.5 rounded-xl bg-emerald-950/60 hover:bg-emerald-900/70 text-emerald-300 border border-emerald-700/50 transition">
+                        Ramah Lengan (RA &lt; 63)
+                    </button>
+                    <button onclick="applyPresetFilter('classic-2010-2016')" class="text-xs px-3 py-1.5 rounded-xl bg-amber-950/60 hover:bg-amber-900/70 text-amber-300 border border-amber-700/50 transition">
+                        Era Klasik (2010–2016)
+                    </button>
+                    <button onclick="applyPresetFilter('modern-2023-2026')" class="text-xs px-3 py-1.5 rounded-xl bg-sky-950/60 hover:bg-sky-900/70 text-sky-300 border border-sky-700/50 transition">
+                        Rilis Terbaru (2023–2026)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Control Panel -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 sm:p-6 space-y-5 shadow-xl">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+                    <!-- 1. Keyword Filter -->
+                    <div class="lg:col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 mb-1.5">Cari Nama / Seri Raket</label>
+                        <div class="relative">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                            <input 
+                                type="text" 
+                                id="filterKeyword" 
+                                oninput="applyCatalogFilters()"
+                                placeholder="Ezone 100, Clash 103, Graphite, Pro Staff..." 
+                                class="w-full bg-slate-950 text-sm text-white rounded-xl pl-10 pr-4 py-2.5 border border-slate-800 focus:outline-none focus:border-tennis-lime transition"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- 2. Brand Filter (Merek) -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1.5">1. Merek (Brand)</label>
+                        <select id="filterBrand" onchange="applyCatalogFilters()" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:outline-none focus:border-tennis-lime transition">
+                            <option value="ALL">Semua Merek</option>
+                            <option value="Yonex">Yonex</option>
+                            <option value="Wilson">Wilson</option>
+                            <option value="Babolat">Babolat</option>
+                            <option value="Head">Head</option>
+                            <option value="Prince">Prince</option>
+                            <option value="Dunlop">Dunlop</option>
+                            <option value="Tecnifibre">Tecnifibre</option>
+                        </select>
+                    </div>
+
+                    <!-- 3. Weight Filter (Berat) -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1.5">2. Berat (Unstrung)</label>
+                        <select id="filterWeight" onchange="applyCatalogFilters()" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:outline-none focus:border-tennis-lime transition">
+                            <option value="ALL">Semua Berat</option>
+                            <option value="LIGHT">Ringan (&le; 290g)</option>
+                            <option value="MEDIUM">Menengah (291g – 305g)</option>
+                            <option value="HEAVY">Berat / Tour (&gt; 305g)</option>
+                        </select>
+                    </div>
+
+                    <!-- 4. Headsize Filter (Ukuran Kepala) -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1.5">3. Headsize (sq. in.)</label>
+                        <select id="filterHeadsize" onchange="applyCatalogFilters()" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:outline-none focus:border-tennis-lime transition">
+                            <option value="ALL">Semua Ukuran</option>
+                            <option value="MID">Midplus Presisi (&le; 97 sq. in.)</option>
+                            <option value="STANDARD">Standar Modern (98 – 100 sq. in.)</option>
+                            <option value="OVERSIZE">Oversize / Forgiving (&gt; 100 sq. in.)</option>
+                        </select>
+                    </div>
+
+                    <!-- 5. Racket Type Filter (Tipe Raket) -->
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1.5">4. Tipe Karakter Raket</label>
+                        <select id="filterType" onchange="applyCatalogFilters()" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:outline-none focus:border-tennis-lime transition">
+                            <option value="ALL">Semua Tipe</option>
+                            <option value="Power">Power</option>
+                            <option value="Control">Control</option>
+                            <option value="Spin">Spin</option>
+                            <option value="Arm-Friendly / Comfort">Arm-Friendly / Comfort</option>
+                            <option value="Tweener">Tweener (All-Around)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Second Row: Year Range 2010-2026 & Sorting -->
+                <div class="pt-4 border-t border-slate-800/80 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+                    <div class="flex flex-wrap items-center gap-4 flex-1">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-4 h-4 text-tennis-lime"></i>
+                            <span class="text-xs font-medium text-slate-300">Rentang Tahun Rilis:</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select id="filterYearMin" onchange="applyCatalogFilters()" class="bg-slate-950 text-xs font-mono text-white rounded-lg px-2.5 py-1.5 border border-slate-800 focus:border-tennis-lime">
+                                <!-- Populated 2010-2026 -->
+                            </select>
+                            <span class="text-xs text-slate-500">sampai</span>
+                            <select id="filterYearMax" onchange="applyCatalogFilters()" class="bg-slate-950 text-xs font-mono text-white rounded-lg px-2.5 py-1.5 border border-slate-800 focus:border-tennis-lime">
+                                <!-- Populated 2010-2026 -->
+                            </select>
+                        </div>
+                        <button onclick="resetAllFilters()" class="text-xs text-slate-400 hover:text-tennis-lime underline underline-offset-4 transition">
+                            Reset Filter
+                        </button>
+                    </div>
+
+                    <div class="flex items-center justify-between md:justify-end gap-3">
+                        <span id="catalogFilterStatus" class="text-xs text-slate-400 font-mono">Menampilkan 14 raket</span>
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs text-slate-400">Urutkan:</label>
+                            <select id="sortCatalog" onchange="applyCatalogFilters()" class="bg-slate-950 text-xs text-white rounded-xl px-3 py-2 border border-slate-800 focus:outline-none focus:border-tennis-lime">
+                                <option value="YEAR_DESC">Tahun Rilis (Terbaru 2026 → 2010)</option>
+                                <option value="YEAR_ASC">Tahun Rilis (Terlama 2010 → 2026)</option>
+                                <option value="WEIGHT_ASC">Berat (Paling Ringan → Berat)</option>
+                                <option value="WEIGHT_DESC">Berat (Paling Berat → Ringan)</option>
+                                <option value="HEADSIZE_DESC">Headsize (Terbesar → Terkecil)</option>
+                                <option value="RA_ASC">Stiffness RA (Terlembut → Kaku)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Catalog Grid -->
+            <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- STICKY FLOATING COMPARISON DOCK -->
+    <div id="floatingCompareDock" class="fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800 shadow-2xl transition-transform duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-tennis-lime"></span>
+                    <span class="font-display font-bold text-xs sm:text-sm text-white">Dock Komparasi Aktif</span>
+                    <span id="dockCountBadge" class="text-xs font-mono px-2 py-0.5 rounded-md bg-tennis-lime/20 text-tennis-lime font-semibold">3/4</span>
+                </div>
+                <button onclick="scrollToComparison()" class="sm:hidden px-3 py-1.5 rounded-lg bg-tennis-lime text-slate-950 font-bold text-xs">
+                    Lihat Tabel
+                </button>
+            </div>
+
+            <!-- Mini Slots for 4 Rackets -->
+            <div id="dockSlotsContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full sm:w-auto flex-1 max-w-3xl">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="hidden sm:flex items-center gap-2 shrink-0">
+                <button onclick="generateAIComparisonVerdict()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-tennis-lime border border-tennis-lime/30 text-xs font-semibold flex items-center gap-1.5 transition">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>Analisis AI</span>
+                </button>
+                <button onclick="scrollToComparison()" class="px-4 py-2 rounded-xl bg-tennis-lime hover:bg-tennis-limeDark text-slate-950 font-display font-bold text-xs flex items-center gap-1.5 transition shadow-md shadow-tennis-lime/10">
+                    <span>Bandingkan Sekarang</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: MANUAL CUSTOM RACKET INPUT -->
+    <div id="customRacketModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-tennis-lime/15 text-tennis-lime flex items-center justify-center">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-lg text-white">Tambah Raket Kustom (2010–2026)</h3>
+                        <p class="text-xs text-slate-400">Masukkan spesifikasi raket secara manual ke katalog & komparasi</p>
+                    </div>
+                </div>
+                <button onclick="closeCustomRacketModal()" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="customRacketForm" onsubmit="handleCustomRacketSubmit(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs text-slate-400 mb-1">Nama Seri Raket *</label>
+                        <input type="text" id="custName" required placeholder="Contoh: Yonex VCore 98 (2023)" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Merek *</label>
+                        <select id="custBrand" required class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                            <option value="Yonex">Yonex</option>
+                            <option value="Wilson">Wilson</option>
+                            <option value="Babolat">Babolat</option>
+                            <option value="Head">Head</option>
+                            <option value="Prince">Prince</option>
+                            <option value="Dunlop">Dunlop</option>
+                            <option value="Tecnifibre">Tecnifibre</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Tahun Rilis (2010–2026) *</label>
+                        <input type="number" id="custYear" required min="2010" max="2026" value="2024" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Berat Unstrung (gram) *</label>
+                        <input type="number" id="custWeight" required min="240" max="360" value="305" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Headsize (sq. in.) *</label>
+                        <input type="number" id="custHeadsize" required min="85" max="115" value="98" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Tipe Karakter Raket *</label>
+                        <select id="custType" required class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                            <option value="Power">Power</option>
+                            <option value="Control">Control</option>
+                            <option value="Spin">Spin</option>
+                            <option value="Arm-Friendly / Comfort">Arm-Friendly / Comfort</option>
+                            <option value="Tweener">Tweener</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Pola Senar (String Pattern)</label>
+                        <input type="text" id="custPattern" value="16x19" placeholder="16x19" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Stiffness / Kekakuan (RA)</label>
+                        <input type="number" id="custRA" min="45" max="78" value="64" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Swingweight (kg·cm²)</label>
+                        <input type="number" id="custSW" min="270" max="360" value="320" class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs text-slate-400 mb-1">Catatan Karakter Singkat</label>
+                        <input type="text" id="custSummary" placeholder="Raket agresif dengan akses spin tinggi dan feel solid..." class="w-full bg-slate-950 text-sm text-white rounded-xl px-3.5 py-2.5 border border-slate-800 focus:border-tennis-lime focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+                    <button type="button" onclick="closeCustomRacketModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-medium">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-tennis-lime text-slate-950 font-display font-bold text-xs">Simpan & Bandingkan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- APPLICATION JAVASCRIPT -->
+    <script>
+        // ============================================================================
+        // 1. INITIAL RACKET DATABASE (2010 - 2026)
+        // Includes all specifically requested rackets + iconic 2010-2026 milestones
+        // ============================================================================
+        const INITIAL_RACKETS = [
+            {
+                id: 'yonex-ezone-100-2025',
+                name: 'Yonex Ezone 100 (2025 Gen 8)',
+                brand: 'Yonex',
+                year: 2025,
+                weight: 300,
+                headsize: 100,
+                type: 'Power',
+                stiffness: 67,
+                swingweight: 318,
+                balance: '320 mm (7 pts HL)',
+                stringPattern: '16x19',
+                beam: '24.5-26.5-23.0 mm',
+                summary: 'Generasi ke-8 Ezone (2025) dengan teknologi 2G-Namd Speed & Minolon di shaft untuk kombinasi easy power eksplosif dan redaman getaran yang lebih halus.',
+                scores: { power: 92, control: 78, spin: 84, comfort: 82, maneuver: 85 }
+            },
+            {
+                id: 'wilson-clash-103-2023',
+                name: 'Wilson Clash 103 v2 (2023)',
+                brand: 'Wilson',
+                year: 2023,
+                weight: 270,
+                headsize: 103,
+                type: 'Arm-Friendly / Comfort',
+                stiffness: 54,
+                swingweight: 308,
+                balance: '330 mm (4 pts HL)',
+                stringPattern: '16x19',
+                beam: '24.5 mm Flat',
+                summary: 'Sangat ramah untuk penderita tennis elbow berkat konstruksi FORTYFIVE° berfleksibilitas tinggi (54 RA) dengan ukuran kepala 103 sq. in. yang memaafkan.',
+                scores: { power: 83, control: 72, spin: 80, comfort: 98, maneuver: 94 }
+            },
+            {
+                id: 'prince-graphite-100-2014',
+                name: 'Prince Classic Graphite 100 / Smash (2014)',
+                brand: 'Prince',
+                year: 2014,
+                weight: 315,
+                headsize: 100,
+                type: 'Control',
+                stiffness: 62,
+                swingweight: 323,
+                balance: '310 mm (10 pts HL)',
+                stringPattern: '16x18',
+                beam: '19.5 mm Constant',
+                summary: 'Klasik legendaris dengan crossbar bridge ikonik. Memberikan ball pocketing mendalam, kontrol arah bola presisi, dan akses spin terbuka dari pola 16x18.',
+                scores: { power: 70, control: 94, spin: 86, comfort: 89, maneuver: 74 }
+            },
+            {
+                id: 'babolat-pure-aero-2023',
+                name: 'Babolat Pure Aero Gen8 (2023)',
+                brand: 'Babolat',
+                year: 2023,
+                weight: 300,
+                headsize: 100,
+                type: 'Spin',
+                stiffness: 65,
+                swingweight: 322,
+                balance: '320 mm (7 pts HL)',
+                stringPattern: '16x19',
+                beam: '23-26-23 mm Aero',
+                summary: 'Mesin spin modern dengan sisipan NF²-Tech Flax dan pola senar FSI Spin yang sedikit lebih rapat dibanding edisi 2019 untuk kontrol lintasan bola yang lebih terarah.',
+                scores: { power: 88, control: 81, spin: 96, comfort: 78, maneuver: 84 }
+            },
+            {
+                id: 'babolat-pure-aero-2019',
+                name: 'Babolat Pure Aero (2019)',
+                brand: 'Babolat',
+                year: 2019,
+                weight: 300,
+                headsize: 100,
+                type: 'Spin',
+                stiffness: 67,
+                swingweight: 324,
+                balance: '320 mm (7 pts HL)',
+                stringPattern: '16x19',
+                beam: '23-26-23 mm Aero',
+                summary: 'Edisi ikonik era Rafael Nadal dengan launch angle tinggi dan putaran topspin masif. Terasa lebih kaku dan bertenaga mentah dibandingkan generasi 2023.',
+                scores: { power: 91, control: 75, spin: 98, comfort: 70, maneuver: 82 }
+            },
+            {
+                id: 'wilson-pro-staff-97-v14-2023',
+                name: 'Wilson Pro Staff 97 v14 (2023)',
+                brand: 'Wilson',
+                year: 2023,
+                weight: 315,
+                headsize: 97,
+                type: 'Control',
+                stiffness: 66,
+                swingweight: 325,
+                balance: '310 mm (10 pts HL)',
+                stringPattern: '16x19',
+                beam: '21.5 mm Flat',
+                summary: 'Teknologi Paradigm Bending mengembalikan feel klasik Pro Staff dengan presisi luar biasa untuk pemain menyerang dan volley di depan net.',
+                scores: { power: 74, control: 95, spin: 81, comfort: 77, maneuver: 75 }
+            },
+            {
+                id: 'wilson-six-one-95-2012',
+                name: 'Wilson BLX Six.One 95 16x18 (2012)',
+                brand: 'Wilson',
+                year: 2012,
+                weight: 332,
+                headsize: 95,
+                type: 'Control',
+                stiffness: 67,
+                swingweight: 334,
+                balance: '305 mm (12 pts HL)',
+                stringPattern: '16x18',
+                beam: '21.6 mm',
+                summary: 'Senjata tur klasik bobot berat dengan stabilitas baja saat menahan pukulan keras lawan. Menuntut teknik ayunan penuh dan footwork yang matang.',
+                scores: { power: 79, control: 96, spin: 83, comfort: 74, maneuver: 64 }
+            },
+            {
+                id: 'head-speed-mp-2024',
+                name: 'Head Speed MP Auxetic 2.0 (2024)',
+                brand: 'Head',
+                year: 2024,
+                weight: 300,
+                headsize: 100,
+                type: 'Tweener',
+                stiffness: 60,
+                swingweight: 330,
+                balance: '320 mm (7 pts HL)',
+                stringPattern: '16x19',
+                beam: '23 mm Constant',
+                summary: 'Raket all-around paling seimbang dengan teknologi Auxetic 2.0 yang lembut di lengan (60 RA) namun memiliki swingweight mantap untuk reli baseline cepat.',
+                scores: { power: 84, control: 86, spin: 87, comfort: 90, maneuver: 81 }
+            },
+            {
+                id: 'head-prestige-pro-2010',
+                name: 'Head YouTek Prestige Pro (2010)',
+                brand: 'Head',
+                year: 2010,
+                weight: 325,
+                headsize: 98,
+                type: 'Control',
+                stiffness: 66,
+                swingweight: 327,
+                balance: '315 mm (9 pts HL)',
+                stringPattern: '16x19',
+                beam: '21 mm Constant',
+                summary: 'Raket player legendaris tahun 2010 dengan d3o smart material dan grip kulit asli, memberikan umpan balik langsung di telapak tangan.',
+                scores: { power: 72, control: 95, spin: 80, comfort: 76, maneuver: 70 }
+            },
+            {
+                id: 'yonex-percept-97-2023',
+                name: 'Yonex Percept 97 (2023)',
+                brand: 'Yonex',
+                year: 2023,
+                weight: 310,
+                headsize: 97,
+                type: 'Control',
+                stiffness: 60,
+                swingweight: 320,
+                balance: '310 mm (10 pts HL)',
+                stringPattern: '16x19',
+                beam: '21 mm Constant',
+                summary: 'Penerus seri VCORE Pro dengan Servo Filter di shaft. Sangat lembut (60 RA), tenang, dan terhubung sempurna dengan bola untuk penempatan sudut tajam.',
+                scores: { power: 73, control: 94, spin: 84, comfort: 91, maneuver: 80 }
+            },
+            {
+                id: 'dunlop-fx-500-2023',
+                name: 'Dunlop FX 500 (2023)',
+                brand: 'Dunlop',
+                year: 2023,
+                weight: 300,
+                headsize: 100,
+                type: 'Power',
+                stiffness: 69,
+                swingweight: 317,
+                balance: '320 mm (7 pts HL)',
+                stringPattern: '16x19',
+                beam: '23-26-23 mm',
+                summary: 'Raket power modern dengan Sonic Core Infinergy oleh BASF di arah jam 2 dan 10. Pantulan bola sangat cepat dengan manuver yang lincah.',
+                scores: { power: 93, control: 77, spin: 85, comfort: 76, maneuver: 86 }
+            },
+            {
+                id: 'wilson-blade-98-v10-2026',
+                name: 'Wilson Blade 98 16x19 v10 (2026)',
+                brand: 'Wilson',
+                year: 2026,
+                weight: 305,
+                headsize: 98,
+                type: 'Control',
+                stiffness: 62,
+                swingweight: 322,
+                balance: '320 mm (7 pts HL)',
+                stringPattern: '16x19',
+                beam: '20.6 mm Flat',
+                summary: 'Evolusi terbaru seri Blade 2026 dengan StableFeel Gen-2 dan grommet Click&Go baru, menggabungkan presisi kontrol agresif dan stabilitas torsi superior.',
+                scores: { power: 80, control: 93, spin: 86, comfort: 88, maneuver: 82 }
+            },
+            {
+                id: 'tecnifibre-tf40-305-2024',
+                name: 'Tecnifibre TF40 305 16x19 v3 (2024)',
+                brand: 'Tecnifibre',
+                year: 2024,
+                weight: 305,
+                headsize: 98,
+                type: 'Control',
+                stiffness: 64,
+                swingweight: 323,
+                balance: '325 mm (6 pts HL)',
+                stringPattern: '16x19',
+                beam: '21.7 mm RS Sharp',
+                summary: 'Batang RS Sharp Section berisi busa penuh (Foam Inside) memberikan sensasi pukulan padat, nyaman, dan presisi khas raket tur Eropa.',
+                scores: { power: 78, control: 92, spin: 84, comfort: 86, maneuver: 80 }
+            },
+            {
+                id: 'babolat-pure-drive-gen11-2025',
+                name: 'Babolat Pure Drive Gen11 (2025)',
+                brand: 'Babolat',
+                year: 2025,
+                weight: 300,
+                headsize: 100,
+                type: 'Power',
+                stiffness: 71,
+                swingweight: 320,
+                balance: '320 mm (7 pts HL)',
+                stringPattern: '16x19',
+                beam: '23-26-23 mm Elliptic',
+                summary: 'Standar emas raket power dunia. Edisi Gen11 menyematkan serat linen NF²-Tech 2.0 untuk meredam getaran frekuensi tinggi tanpa mengurangi ledakan servis.',
+                scores: { power: 96, control: 75, spin: 87, comfort: 73, maneuver: 84 }
+            }
+        ];
+
+        // State Management
+        let racketCatalog = [...INITIAL_RACKETS];
+        let compareIds = [
+            'yonex-ezone-100-2025',
+            'wilson-clash-103-2023',
+            'babolat-pure-aero-2023',
+            'prince-graphite-100-2014'
+        ];
+        let aiFoundRacketsCache = [];
+
+        // Distinct Colors for Comparison Slots (Up to 4)
+        const SLOT_COLORS = [
+            { hex: '#ccff00', name: 'Lime', border: 'border-[#ccff00]', text: 'text-[#ccff00]', bg: 'bg-[#ccff00]' },
+            { hex: '#38bdf8', name: 'Sky', border: 'border-sky-400', text: 'text-sky-400', bg: 'bg-sky-400' },
+            { hex: '#f97316', name: 'Orange', border: 'border-orange-500', text: 'text-orange-400', bg: 'bg-orange-500' },
+            { hex: '#c084fc', name: 'Purple', border: 'border-purple-400', text: 'text-purple-400', bg: 'bg-purple-400' }
+        ];
+
+        // Brand Identity Colors for Custom SVG Racket Illustrations
+        const BRAND_THEMES = {
+            'Yonex': { primary: '#38bdf8', secondary: '#ccff00', badgeBg: 'bg-sky-500/15 text-sky-300 border-sky-500/30' },
+            'Wilson': { primary: '#ef4444', secondary: '#f59e0b', badgeBg: 'bg-rose-500/15 text-rose-300 border-rose-500/30' },
+            'Babolat': { primary: '#eab308', secondary: '#38bdf8', badgeBg: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/30' },
+            'Head': { primary: '#f97316', secondary: '#e2e8f0', badgeBg: 'bg-orange-500/15 text-orange-300 border-orange-500/30' },
+            'Prince': { primary: '#10b981', secondary: '#eab308', badgeBg: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
+            'Dunlop': { primary: '#06b6d4', secondary: '#3b82f6', badgeBg: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30' },
+            'Tecnifibre': { primary: '#6366f1', secondary: '#ef4444', badgeBg: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30' }
+        };
+
+        // ============================================================================
+        // 2. HELPER & UI RENDERING FUNCTIONS
+        // ============================================================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const borderColor = type === 'success' ? 'border-tennis-lime' : type === 'warning' ? 'border-amber-400' : 'border-sky-400';
+            const iconName = type === 'success' ? 'check-circle-2' : type === 'warning' ? 'alert-triangle' : 'info';
+            const iconColor = type === 'success' ? 'text-tennis-lime' : type === 'warning' ? 'text-amber-400' : 'text-sky-400';
+
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-900/95 backdrop-blur-md border-l-4 ${borderColor} border border-slate-800 shadow-2xl text-xs sm:text-sm text-white transform transition-all duration-300 translate-x-0`;
+            toast.innerHTML = `
+                <i data-lucide="${iconName}" class="w-4 h-4 ${iconColor} shrink-0"></i>
+                <span class="flex-1">${message}</span>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-8');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        // Generate Dynamic SVG Racket Illustration based on Brand & Headsize
+        function renderRacketSVG(racket, heightClass = "h-28") {
+            const theme = BRAND_THEMES[racket.brand] || { primary: '#ccff00', secondary: '#38bdf8' };
+            // Scale head width slightly based on headsize (95 -> narrower, 103 -> wider)
+            const rx = racket.headsize >= 102 ? 30 : racket.headsize <= 97 ? 25 : 27.5;
+            const ry = racket.headsize >= 102 ? 38 : racket.headsize <= 97 ? 34 : 36;
+            const hasCrossbar = racket.name.toLowerCase().includes('graphite') || racket.brand === 'Prince';
+
+            return `
+            <svg viewBox="0 0 100 160" class="${heightClass} w-auto mx-auto drop-shadow-lg select-none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad-${racket.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="${theme.primary}" />
+                        <stop offset="100%" stop-color="${theme.secondary}" />
+                    </linearGradient>
+                </defs>
+                <!-- String Bed Grid -->
+                <ellipse cx="50" cy="46" rx="${rx - 2}" ry="${ry - 2}" fill="rgba(15, 23, 42, 0.65)" />
+                <g stroke="rgba(226, 232, 240, 0.22)" stroke-width="0.7">
+                    <line x1="34" y1="16" x2="34" y2="76" />
+                    <line x1="42" y1="12" x2="42" y2="80" />
+                    <line x1="50" y1="11" x2="50" y2="81" />
+                    <line x1="58" y1="12" x2="58" y2="80" />
+                    <line x1="66" y1="16" x2="66" y2="76" />
+                    <line x1="25" y1="28" x2="75" y2="28" />
+                    <line x1="23" y1="37" x2="77" y2="37" />
+                    <line x1="22" y1="46" x2="78" y2="46" />
+                    <line x1="23" y1="55" x2="77" y2="55" />
+                    <line x1="25" y1="64" x2="75" y2="64" />
+                </g>
+                <!-- Throat / Yoke -->
+                <path d="M 37 78 L 46 108 L 54 108 L 63 78" stroke="url(#grad-${racket.id})" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                ${hasCrossbar ? `<line x1="39" y1="87" x2="61" y2="87" stroke="${theme.primary}" stroke-width="3" />` : ''}
+                <!-- Racket Hoop -->
+                <ellipse cx="50" cy="46" rx="${rx}" ry="${ry}" stroke="url(#grad-${racket.id})" stroke-width="4.5" />
+                <!-- Shaft -->
+                <rect x="46.5" y="106" width="7" height="22" rx="1.5" fill="${theme.primary}" />
+                <!-- Grip Handle -->
+                <rect x="45.5" y="126" width="9" height="28" rx="2" fill="#e2e8f0" stroke="#475569" stroke-width="1" />
+                <line x1="45.5" y1="133" x2="54.5" y2="135" stroke="#94a3b8" stroke-width="1" />
+                <line x1="45.5" y1="140" x2="54.5" y2="142" stroke="#94a3b8" stroke-width="1" />
+                <line x1="45.5" y1="147" x2="54.5" y2="149" stroke="#94a3b8" stroke-width="1" />
+            </svg>`;
+        }
+
+        // Compute scores automatically if an AI or custom racket doesn't provide them
+        function ensureScores(racket) {
+            if (racket.scores && typeof racket.scores.power === 'number') return racket.scores;
+            const power = Math.min(98, Math.max(60, Math.round((racket.headsize - 90) * 1.4 + (racket.stiffness - 50) * 1.1 + 48)));
+            const control = Math.min(98, Math.max(60, Math.round((110 - racket.headsize) * 1.6 + (racket.weight - 270) * 0.45 + 52)));
+            const spin = racket.type === 'Spin' ? 94 : Math.min(96, Math.max(68, Math.round((racket.headsize - 92) * 1.1 + 74)));
+            const comfort = Math.min(99, Math.max(58, Math.round((78 - racket.stiffness) * 1.9 + 50)));
+            const maneuver = Math.min(98, Math.max(60, Math.round((345 - racket.weight) * 0.7 + (345 - racket.swingweight) * 0.4 + 35)));
+            return { power, control, spin, comfort, maneuver };
+        }
+
+        function getTypeBadgeStyle(type) {
+            switch (type) {
+                case 'Power': return 'bg-sky-500/15 text-sky-300 border-sky-500/30';
+                case 'Control': return 'bg-rose-500/15 text-rose-300 border-rose-500/30';
+                case 'Spin': return 'bg-tennis-lime/15 text-tennis-lime border-tennis-lime/30';
+                case 'Arm-Friendly / Comfort': return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+                default: return 'bg-purple-500/15 text-purple-300 border-purple-500/30';
+            }
+        }
+
+        // ============================================================================
+        // 3. POPULATE YEAR DROPDOWNS & QUICK SELECT
+        // ============================================================================
+        function initYearSelectors() {
+            const minSel = document.getElementById('filterYearMin');
+            const maxSel = document.getElementById('filterYearMax');
+            minSel.innerHTML = '';
+            maxSel.innerHTML = '';
+            for (let y = 2010; y <= 2026; y++) {
+                const optMin = document.createElement('option');
+                optMin.value = y;
+                optMin.textContent = y;
+                if (y === 2010) optMin.selected = true;
+                minSel.appendChild(optMin);
+
+                const optMax = document.createElement('option');
+                optMax.value = y;
+                optMax.textContent = y;
+                if (y === 2026) optMax.selected = true;
+                maxSel.appendChild(optMax);
+            }
+        }
+
+        function updateQuickAddDropdown() {
+            const sel = document.getElementById('quickAddCompareSelect');
+            sel.innerHTML = '<option value="">+ Tambah Cepat ke Komparasi...</option>';
+            const sorted = [...racketCatalog].sort((a, b) => b.year - a.year);
+            sorted.forEach(r => {
+                const inCompare = compareIds.includes(r.id);
+                const opt = document.createElement('option');
+                opt.value = r.id;
+                opt.disabled = inCompare;
+                opt.textContent = `${r.brand} — ${r.name} (${r.weight}g | ${r.headsize}") ${inCompare ? '[Sudah Dipilih]' : ''}`;
+                sel.appendChild(opt);
+            });
+        }
+
+        function handleQuickAddSelect(selectEl) {
+            const id = selectEl.value;
+            if (!id) return;
+            toggleCompareRacket(id);
+            selectEl.value = '';
+        }
+
+        // ============================================================================
+        // 4. COMPARISON LOGIC & VISUAL MATRIX RENDERING
+        // ============================================================================
+        function toggleCompareRacket(racketId) {
+            const idx = compareIds.indexOf(racketId);
+            const racket = racketCatalog.find(r => r.id === racketId);
+
+            if (idx > -1) {
+                compareIds.splice(idx, 1);
+                showToast(`${racket ? racket.name : 'Raket'} dihapus dari meja komparasi.`, 'info');
+            } else {
+                if (compareIds.length >= 4) {
+                    showToast('Maksimal 4 raket dapat dibandingkan sekaligus. Hapus salah satu terlebih dahulu.', 'warning');
+                    return;
+                }
+                compareIds.push(racketId);
+                showToast(`${racket ? racket.name : 'Raket'} ditambahkan ke meja komparasi!`, 'success');
+            }
+            refreshAllUI();
+        }
+
+        function clearComparison() {
+            compareIds = [];
+            document.getElementById('aiVerdictContainer').classList.add('hidden');
+            showToast('Meja komparasi telah dikosongkan.', 'info');
+            refreshAllUI();
+        }
+
+        function loadDefaultComparisonPreset() {
+            compareIds = [
+                'yonex-ezone-100-2025',
+                'wilson-clash-103-2023',
+                'babolat-pure-aero-2023',
+                'prince-graphite-100-2014'
+            ];
+            refreshAllUI();
+            showToast('Preset komparasi 4 raket lintas generasi berhasil dimuat!', 'success');
+        }
+
+        function scrollToComparison() {
+            document.getElementById('comparison-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderComparisonSection() {
+            const selectedRackets = compareIds.map(id => racketCatalog.find(r => r.id === id)).filter(Boolean);
+            const emptyState = document.getElementById('emptyCompareState');
+            const matrixWrapper = document.getElementById('comparisonMatrixWrapper');
+            const grid = document.getElementById('comparisonGrid');
+
+            // Update counters
+            document.getElementById('navCompareCount').textContent = selectedRackets.length;
+            document.getElementById('mobileCompareCount').textContent = selectedRackets.length;
+            document.getElementById('dockCountBadge').textContent = `${selectedRackets.length}/4`;
+
+            if (selectedRackets.length === 0) {
+                emptyState.classList.remove('hidden');
+                matrixWrapper.classList.add('hidden');
+                renderFloatingDock(selectedRackets);
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            matrixWrapper.classList.remove('hidden');
+
+            // Calculate highlights (Min/Max for badges)
+            const weights = selectedRackets.map(r => r.weight);
+            const minWeight = Math.min(...weights);
+            const maxWeight = Math.max(...weights);
+
+            const headsizes = selectedRackets.map(r => r.headsize);
+            const maxHead = Math.max(...headsizes);
+            const minHead = Math.min(...headsizes);
+
+            const stiffnesses = selectedRackets.map(r => r.stiffness);
+            const minRA = Math.min(...stiffnesses);
+
+            // Render Columns
+            grid.innerHTML = '';
+            selectedRackets.forEach((racket, index) => {
+                const colorSlot = SLOT_COLORS[index % SLOT_COLORS.length];
+                const brandTheme = BRAND_THEMES[racket.brand] || BRAND_THEMES['Yonex'];
+                const isLightest = selectedRackets.length > 1 && racket.weight === minWeight;
+                const isHeaviest = selectedRackets.length > 1 && racket.weight === maxWeight && minWeight !== maxWeight;
+                const isLargestHead = selectedRackets.length > 1 && racket.headsize === maxHead && minHead !== maxHead;
+                const isSoftestRA = selectedRackets.length > 1 && racket.stiffness === minRA;
+
+                const card = document.createElement('div');
+                card.className = `relative flex flex-col justify-between rounded-3xl bg-slate-900/95 border-2 ${colorSlot.border} p-5 shadow-xl transition hover:-translate-y-0.5`;
+                card.innerHTML = `
+                    <div>
+                        <!-- Top Slot Header -->
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-mono font-bold ${colorSlot.text}">
+                                <span class="w-2.5 h-2.5 rounded-full ${colorSlot.bg}"></span>
+                                SLOT #${index + 1}
+                            </span>
+                            <button onclick="toggleCompareRacket('${racket.id}')" title="Hapus dari Komparasi" class="p-1.5 rounded-lg bg-slate-800/90 hover:bg-rose-950 text-slate-400 hover:text-rose-400 transition">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Visual Racket SVG & Badges -->
+                        <div class="relative bg-slate-950/70 rounded-2xl p-4 mb-4 border border-slate-800/80 flex items-center justify-center">
+                            ${renderRacketSVG(racket, "h-32")}
+                            <div class="absolute top-2.5 left-2.5 flex flex-col gap-1">
+                                <span class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md border ${brandTheme.badgeBg}">
+                                    ${racket.brand}
+                                </span>
+                                <span class="text-[11px] font-mono px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">
+                                    ${racket.year}
+                                </span>
+                            </div>
+                            <!-- Dynamic Highlight Badges -->
+                            <div class="absolute bottom-2.5 right-2.5 flex flex-col items-end gap-1">
+                                ${isLightest ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-tennis-lime/20 text-tennis-lime border border-tennis-lime/40">⚡ Paling Ringan</span>` : ''}
+                                ${isHeaviest ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">🛡️ Paling Stabil/Berat</span>` : ''}
+                                ${isLargestHead ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/40">🎯 Sweetspot Terbesar</span>` : ''}
+                                ${isSoftestRA ? `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">💪 Paling Ramah Lengan</span>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Racket Title -->
+                        <h3 class="font-display font-bold text-base text-white leading-snug mb-3 min-h-[2.5rem]">${racket.name}</h3>
+
+                        <!-- 4 PRIMARY COMPARISON METRICS (Merek, Berat, Headsize, Tipe Raket) -->
+                        <div class="space-y-2 bg-slate-950/80 p-3.5 rounded-2xl border border-slate-800/90 mb-3">
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-tennis-lime mb-1">Spesifikasi Utama</div>
+                            
+                            <div class="flex items-center justify-between text-xs py-1 border-b border-slate-800/70">
+                                <span class="text-slate-400">1. Merek & Tahun</span>
+                                <span class="font-semibold text-white">${racket.brand} (${racket.year})</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs py-1 border-b border-slate-800/70">
+                                <span class="text-slate-400">2. Berat (Unstrung)</span>
+                                <span class="font-mono font-bold text-sm text-tennis-lime">${racket.weight} gram</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs py-1 border-b border-slate-800/70">
+                                <span class="text-slate-400">3. Ukuran Kepala</span>
+                                <span class="font-mono font-bold text-sm text-sky-400">${racket.headsize} sq. in.</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs pt-1">
+                                <span class="text-slate-400">4. Tipe Raket</span>
+                                <span class="text-[11px] font-medium px-2 py-0.5 rounded-md border ${getTypeBadgeStyle(racket.type)}">${racket.type}</span>
+                            </div>
+                        </div>
+
+                        <!-- PRO BIOMECHANICAL METRICS -->
+                        <div class="space-y-1.5 px-1 text-xs mb-3">
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-1">Metrik Pro Tambahan</div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Kekakuan (RA):</span>
+                                <span class="font-mono text-slate-200 font-medium">${racket.stiffness} RA ${racket.stiffness <= 61 ? '(Lembut)' : racket.stiffness >= 67 ? '(Kaku)' : '(Sedang)'}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Swingweight:</span>
+                                <span class="font-mono text-slate-200 font-medium">${racket.swingweight} kg·cm²</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Pola Senar:</span>
+                                <span class="font-mono text-slate-200 font-medium">${racket.stringPattern}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Balance:</span>
+                                <span class="font-mono text-slate-300 text-[11px]">${racket.balance || '320 mm'}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Footnote -->
+                    <p class="text-[11px] text-slate-400 leading-relaxed bg-slate-950/50 p-3 rounded-xl border border-slate-800/60">
+                        ${racket.summary}
+                    </p>
+                `;
+                grid.appendChild(card);
+            });
+
+            // If fewer than 4 rackets, show an "Add Slot" placeholder card
+            if (selectedRackets.length < 4) {
+                const addCard = document.createElement('div');
+                addCard.className = 'rounded-3xl bg-slate-900/40 border-2 border-dashed border-slate-800 hover:border-slate-700 p-6 flex flex-col items-center justify-center text-center gap-3 min-h-[360px] transition';
+                addCard.innerHTML = `
+                    <div class="w-12 h-12 rounded-2xl bg-slate-800/80 text-slate-400 flex items-center justify-center">
+                        <i data-lucide="plus" class="w-6 h-6"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h4 class="font-display font-bold text-sm text-slate-300">Slot Komparasi #${selectedRackets.length + 1} Kosong</h4>
+                        <p class="text-xs text-slate-500 max-w-[200px]">Pilih raket lain dari katalog atau hasil pencarian AI untuk dibandingkan.</p>
+                    </div>
+                    <a href="#catalog-section" class="mt-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-tennis-lime border border-slate-700 transition">
+                        Pilih dari Katalog
+                    </a>
+                `;
+                grid.appendChild(addCard);
+            }
+
+            renderTelemetryBars(selectedRackets);
+            renderRadarChart(selectedRackets);
+            renderFloatingDock(selectedRackets);
+            lucide.createIcons();
+        }
+
+        // Render Visual Comparison Bars for Weight, Headsize, Stiffness, Swingweight
+        function renderTelemetryBars(selectedRackets) {
+            const container = document.getElementById('metricBarsContainer');
+            const metrics = [
+                { key: 'weight', label: 'Berat Tanpa Senar (Unstrung Weight)', unit: 'g', min: 250, max: 345 },
+                { key: 'headsize', label: 'Ukuran Kepala (Headsize)', unit: ' sq. in.', min: 90, max: 108 },
+                { key: 'stiffness', label: 'Kekakuan Frame / Stiffness (RA)', unit: ' RA', min: 48, max: 75 },
+                { key: 'swingweight', label: 'Swingweight (Bobot Ayun)', unit: ' kg·cm²', min: 290, max: 345 }
+            ];
+
+            container.innerHTML = metrics.map(m => {
+                const rows = selectedRackets.map((r, idx) => {
+                    const color = SLOT_COLORS[idx % SLOT_COLORS.length];
+                    const val = r[m.key] || 300;
+                    const pct = Math.min(100, Math.max(12, Math.round(((val - m.min) / (m.max - m.min)) * 100)));
+                    return `
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium truncate pr-2 flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full ${color.bg}"></span>
+                                    ${r.brand} — ${r.name}
+                                </span>
+                                <span class="font-mono font-bold ${color.text} shrink-0">${val}${m.unit}</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800/80">
+                                <div class="h-full rounded-full transition-all duration-500" style="width: ${pct}%; background-color: ${color.hex}"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 space-y-2.5">
+                        <div class="text-xs font-display font-bold text-white uppercase tracking-wider">${m.label}</div>
+                        <div class="space-y-2">${rows}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render SVG Spider/Radar Chart for Selected Rackets
+        function renderRadarChart(selectedRackets) {
+            const container = document.getElementById('radarChartContainer');
+            const legend = document.getElementById('radarLegend');
+            const axes = [
+                { key: 'power', label: 'POWER' },
+                { key: 'spin', label: 'SPIN' },
+                { key: 'control', label: 'CONTROL' },
+                { key: 'comfort', label: 'COMFORT' },
+                { key: 'maneuver', label: 'MANUVER' }
+            ];
+            const cx = 140, cy = 140, radius = 92;
+
+            function polarToCartesian(angleDeg, r) {
+                const rad = (angleDeg - 90) * (Math.PI / 180);
+                return {
+                    x: cx + r * Math.cos(rad),
+                    y: cy + r * Math.sin(rad)
+                };
+            }
+
+            // Grid Pentagons
+            let gridPolygons = '';
+            [0.25, 0.5, 0.75, 1].forEach(level => {
+                const pts = axes.map((_, i) => {
+                    const p = polarToCartesian(i * 72, radius * level);
+                    return `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+                }).join(' ');
+                gridPolygons += `<polygon points="${pts}" fill="none" stroke="rgba(148, 163, 184, 0.18)" stroke-width="1" />`;
+            });
+
+            // Axis lines & labels
+            let axisLines = '';
+            axes.forEach((ax, i) => {
+                const end = polarToCartesian(i * 72, radius);
+                const lbl = polarToCartesian(i * 72, radius + 24);
+                axisLines += `<line x1="${cx}" y1="${cy}" x2="${end.x.toFixed(1)}" y2="${end.y.toFixed(1)}" stroke="rgba(148, 163, 184, 0.2)" stroke-width="1" />`;
+                axisLines += `<text x="${lbl.x.toFixed(1)}" y="${lbl.y.toFixed(1)}" fill="#cbd5e1" font-size="9.5" font-family="JetBrains Mono" font-weight="600" text-anchor="middle" dominant-baseline="middle">${ax.label}</text>`;
+            });
+
+            // Racket Polygons
+            let dataPolygons = '';
+            selectedRackets.forEach((racket, idx) => {
+                const scores = ensureScores(racket);
+                const color = SLOT_COLORS[idx % SLOT_COLORS.length].hex;
+                const pts = axes.map((ax, i) => {
+                    const val = (scores[ax.key] || 75) / 100;
+                    const p = polarToCartesian(i * 72, radius * val);
+                    return `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+                }).join(' ');
+
+                dataPolygons += `
+                    <polygon points="${pts}" fill="${color}" fill-opacity="0.16" stroke="${color}" stroke-width="2.2" />
+                `;
+            });
+
+            container.innerHTML = `
+                <svg viewBox="0 0 280 280" class="w-full h-full">
+                    ${gridPolygons}
+                    ${axisLines}
+                    ${dataPolygons}
+                </svg>
+            `;
+
+            legend.innerHTML = selectedRackets.map((r, idx) => {
+                const color = SLOT_COLORS[idx % SLOT_COLORS.length];
+                return `
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800">
+                        <span class="w-2.5 h-2.5 rounded-full ${color.bg}"></span>
+                        <span class="text-slate-200 font-medium truncate max-w-[140px]">${r.name}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Sticky Bottom Dock
+        function renderFloatingDock(selectedRackets) {
+            const container = document.getElementById('dockSlotsContainer');
+            let html = '';
+            for (let i = 0; i < 4; i++) {
+                const r = selectedRackets[i];
+                const color = SLOT_COLORS[i];
+                if (r) {
+                    html += `
+                        <div class="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border ${color.border}/60">
+                            <div class="truncate">
+                                <span class="text-[10px] font-mono ${color.text} block">${r.brand} • ${r.year}</span>
+                                <span class="text-xs font-medium text-white truncate block">${r.name}</span>
+                            </div>
+                            <button onclick="toggleCompareRacket('${r.id}')" class="text-slate-400 hover:text-rose-400 p-1 shrink-0">
+                                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <a href="#catalog-section" class="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900/40 border border-dashed border-slate-800 text-slate-500 hover:text-slate-300 text-xs transition">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                            <span>Slot #${i + 1}</span>
+                        </a>
+                    `;
+                }
+            }
+            container.innerHTML = html;
+        }
+
+        // ============================================================================
+        // 5. CATALOG FILTERING & SORTING (2010 - 2026)
+        // ============================================================================
+        function applyPresetFilter(preset) {
+            document.getElementById('filterKeyword').value = '';
+            document.getElementById('filterBrand').value = 'ALL';
+            document.getElementById('filterWeight').value = 'ALL';
+            document.getElementById('filterHeadsize').value = 'ALL';
+            document.getElementById('filterType').value = 'ALL';
+            document.getElementById('filterYearMin').value = '2010';
+            document.getElementById('filterYearMax').value = '2026';
+
+            if (preset === 'arm-friendly') {
+                document.getElementById('sortCatalog').value = 'RA_ASC';
+                showToast('Menampilkan urutan raket dari yang paling lembut / ramah lengan (RA terendah).', 'info');
+            } else if (preset === 'classic-2010-2016') {
+                document.getElementById('filterYearMin').value = '2010';
+                document.getElementById('filterYearMax').value = '2016';
+            } else if (preset === 'modern-2023-2026') {
+                document.getElementById('filterYearMin').value = '2023';
+                document.getElementById('filterYearMax').value = '2026';
+            }
+            applyCatalogFilters();
+        }
+
+        function resetAllFilters() {
+            applyPresetFilter('all');
+            document.getElementById('sortCatalog').value = 'YEAR_DESC';
+            applyCatalogFilters();
+            showToast('Semua filter katalog telah direset.', 'info');
+        }
+
+        function applyCatalogFilters() {
+            const keyword = document.getElementById('filterKeyword').value.trim().toLowerCase();
+            const brand = document.getElementById('filterBrand').value;
+            const weightCat = document.getElementById('filterWeight').value;
+            const headsizeCat = document.getElementById('filterHeadsize').value;
+            const typeCat = document.getElementById('filterType').value;
+            const yearMin = parseInt(document.getElementById('filterYearMin').value, 10) || 2010;
+            const yearMax = parseInt(document.getElementById('filterYearMax').value, 10) || 2026;
+            const sortBy = document.getElementById('sortCatalog').value;
+
+            let filtered = racketCatalog.filter(r => {
+                if (keyword && !(`${r.name} ${r.brand} ${r.type} ${r.year} ${r.summary}`.toLowerCase().includes(keyword))) {
+                    return false;
+                }
+                if (brand !== 'ALL' && r.brand.toLowerCase() !== brand.toLowerCase()) return false;
+                if (r.year < Math.min(yearMin, yearMax) || r.year > Math.max(yearMin, yearMax)) return false;
+
+                if (weightCat === 'LIGHT' && r.weight > 290) return false;
+                if (weightCat === 'MEDIUM' && (r.weight < 291 || r.weight > 305)) return false;
+                if (weightCat === 'HEAVY' && r.weight <= 305) return false;
+
+                if (headsizeCat === 'MID' && r.headsize > 97) return false;
+                if (headsizeCat === 'STANDARD' && (r.headsize < 98 || r.headsize > 100)) return false;
+                if (headsizeCat === 'OVERSIZE' && r.headsize <= 100) return false;
+
+                if (typeCat !== 'ALL' && !r.type.toLowerCase().includes(typeCat.toLowerCase())) return false;
+
+                return true;
+            });
+
+            // Sorting
+            filtered.sort((a, b) => {
+                if (sortBy === 'YEAR_DESC') return b.year - a.year;
+                if (sortBy === 'YEAR_ASC') return a.year - b.year;
+                if (sortBy === 'WEIGHT_ASC') return a.weight - b.weight;
+                if (sortBy === 'WEIGHT_DESC') return b.weight - a.weight;
+                if (sortBy === 'HEADSIZE_DESC') return b.headsize - a.headsize;
+                if (sortBy === 'RA_ASC') return a.stiffness - b.stiffness;
+                return 0;
+            });
+
+            renderCatalogGrid(filtered);
+        }
+
+        function renderCatalogGrid(rackets) {
+            const grid = document.getElementById('catalogGrid');
+            document.getElementById('catalogFilterStatus').textContent = `Menampilkan ${rackets.length} dari ${racketCatalog.length} raket`;
+            document.getElementById('navCatalogCount').textContent = racketCatalog.length;
+
+            if (rackets.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full rounded-3xl bg-slate-900/60 border border-slate-800 p-10 text-center space-y-3">
+                        <i data-lucide="search-x" class="w-8 h-8 text-slate-500 mx-auto"></i>
+                        <h4 class="font-display font-bold text-base text-white">Tidak Ada Raket yang Cocok di Katalog Lokal</h4>
+                        <p class="text-xs text-slate-400 max-w-md mx-auto">Coba gunakan fitur <strong>Kolom Pencarian Berbasis AI</strong> di bagian atas halaman untuk mencari raket spesifik tersebut dan menambahkannya secara otomatis!</p>
+                        <button onclick="resetAllFilters()" class="px-4 py-2 rounded-xl bg-slate-800 text-tennis-lime text-xs font-semibold">Reset Filter</button>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            grid.innerHTML = rackets.map(racket => {
+                const isSelected = compareIds.includes(racket.id);
+                const brandTheme = BRAND_THEMES[racket.brand] || BRAND_THEMES['Yonex'];
+                return `
+                    <div class="group rounded-3xl bg-slate-900/90 hover:bg-slate-900 border ${isSelected ? 'border-tennis-lime shadow-lg shadow-tennis-lime/10' : 'border-slate-800/90 hover:border-slate-700'} p-5 flex flex-col justify-between transition duration-200">
+                        <div>
+                            <!-- Top Meta -->
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-lg border ${brandTheme.badgeBg}">
+                                        ${racket.brand}
+                                    </span>
+                                    <span class="text-xs font-mono px-2.5 py-0.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">
+                                        ${racket.year}
+                                    </span>
+                                </div>
+                                <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-lg border ${getTypeBadgeStyle(racket.type)}">
+                                    ${racket.type}
+                                </span>
+                            </div>
+
+                            <!-- Visual & Name -->
+                            <div class="flex items-center gap-4 bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/70 mb-4">
+                                <div class="shrink-0 w-16 flex items-center justify-center">
+                                    ${renderRacketSVG(racket, "h-24")}
+                                </div>
+                                <div class="space-y-1.5 flex-1 min-w-0">
+                                    <h3 class="font-display font-bold text-base text-white leading-snug group-hover:text-tennis-lime transition">${racket.name}</h3>
+                                    <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">${racket.summary}</p>
+                                </div>
+                            </div>
+
+                            <!-- 4 Key Spec Pills -->
+                            <div class="grid grid-cols-4 gap-2 text-center mb-4">
+                                <div class="bg-slate-950/80 p-2 rounded-xl border border-slate-800/80">
+                                    <span class="text-[10px] text-slate-400 block">Berat</span>
+                                    <span class="font-mono font-bold text-xs text-white">${racket.weight}g</span>
+                                </div>
+                                <div class="bg-slate-950/80 p-2 rounded-xl border border-slate-800/80">
+                                    <span class="text-[10px] text-slate-400 block">Headsize</span>
+                                    <span class="font-mono font-bold text-xs text-sky-400">${racket.headsize}"</span>
+                                </div>
+                                <div class="bg-slate-950/80 p-2 rounded-xl border border-slate-800/80">
+                                    <span class="text-[10px] text-slate-400 block">Stiffness</span>
+                                    <span class="font-mono font-bold text-xs text-emerald-400">${racket.stiffness} RA</span>
+                                </div>
+                                <div class="bg-slate-950/80 p-2 rounded-xl border border-slate-800/80">
+                                    <span class="text-[10px] text-slate-400 block">Swingwt</span>
+                                    <span class="font-mono font-bold text-xs text-amber-300">${racket.swingweight}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button 
+                            onclick="toggleCompareRacket('${racket.id}')"
+                            class="w-full py-2.5 px-4 rounded-xl font-display font-bold text-xs flex items-center justify-center gap-2 transition cursor-pointer ${
+                                isSelected 
+                                ? 'bg-tennis-lime text-slate-950 hover:bg-tennis-limeDark' 
+                                : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
+                            }"
+                        >
+                            <i data-lucide="${isSelected ? 'check-circle-2' : 'scale'}" class="w-4 h-4"></i>
+                            <span>${isSelected ? 'Terpilih di Meja Komparasi' : '+ Bandingkan Raket Ini'}</span>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        // ============================================================================
+        // 6. GEMINI API INTEGRATION (AI SEARCH & BIOMECHANICAL VERDICT)
+        // ============================================================================
+        const apiKey = ""; // Canvas runtime injects API key automatically
+
+        async function fetchWithExponentialBackoff(url, options, maxRetries = 4) {
+            let delay = 1000;
+            for (let attempt = 0; attempt <= maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                    if (attempt === maxRetries) {
+                        throw new Error(`HTTP Error ${response.status}`);
+                    }
+                } catch (err) {
+                    if (attempt === maxRetries) throw err;
+                }
+                await new Promise(res => setTimeout(res, delay));
+                delay *= 2;
+            }
+        }
+
+        function triggerQuickAISearch(promptText) {
+            const input = document.getElementById('aiSearchInput');
+            input.value = promptText;
+            handleAISearch(new Event('submit'));
+        }
+
+        function closeAISearchResults() {
+            document.getElementById('aiSearchResultsContainer').classList.add('hidden');
+        }
+
+        async function handleAISearch(event) {
+            if (event) event.preventDefault();
+            const query = document.getElementById('aiSearchInput').value.trim();
+            if (!query) {
+                showToast('Masukkan nama raket atau kriteria pencarian terlebih dahulu.', 'warning');
+                return;
+            }
+
+            const loadingEl = document.getElementById('aiSearchLoading');
+            const resultsContainer = document.getElementById('aiSearchResultsContainer');
+            const btn = document.getElementById('aiSearchBtn');
+
+            loadingEl.classList.remove('hidden');
+            resultsContainer.classList.add('hidden');
+            btn.disabled = true;
+            btn.classList.add('opacity-60');
+
+            const systemPrompt = `Anda adalah pakar peralatan tenis dunia dan teknisi raket (Master Racquet Technician) untuk RacquetLab ID.
+Tugas Anda adalah menemukan atau merekomendasikan raket tenis nyata dari rentang tahun rilis 2010 hingga 2026 berdasarkan permintaan pengguna.
+Pastikan spesifikasi yang diberikan akurat sesuai data rilis pabrikan (Unstrung Weight dalam gram, Headsize dalam sq. in., Stiffness dalam RA, Swingweight dalam kg.cm2, dan Tipe Raket: Power, Control, Spin, Arm-Friendly / Comfort, atau Tweener).
+Kembalikan antara 2 hingga 4 raket tenis yang paling relevan dalam bahasa Indonesia.`;
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [{ text: `Permintaan pencarian raket tenis (rentang 2010-2026): "${query}"` }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            searchSummary: {
+                                type: "STRING",
+                                description: "Penjelasan singkat hasil pencarian AI dalam Bahasa Indonesia"
+                            },
+                            rackets: {
+                                type: "ARRAY",
+                                items: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        name: { type: "STRING", description: "Nama lengkap seri raket beserta tahunnya, misal Head Radical MP (2012)" },
+                                        brand: { type: "STRING", description: "Merek raket: Yonex, Wilson, Babolat, Head, Prince, Dunlop, atau Tecnifibre" },
+                                        year: { type: "INTEGER", description: "Tahun rilis antara 2010 hingga 2026" },
+                                        weight: { type: "INTEGER", description: "Berat tanpa senar (unstrung weight) dalam gram, misal 295 atau 300" },
+                                        headsize: { type: "INTEGER", description: "Ukuran kepala raket dalam sq. in., misal 98, 100, 103" },
+                                        type: { type: "STRING", description: "Pilih salah satu: Power, Control, Spin, Arm-Friendly / Comfort, atau Tweener" },
+                                        stiffness: { type: "INTEGER", description: "Kekakuan RA antara 50 sampai 73" },
+                                        swingweight: { type: "INTEGER", description: "Swingweight antara 295 sampai 340" },
+                                        balance: { type: "STRING", description: "Titik keseimbangan misal 320 mm (7 pts HL)" },
+                                        stringPattern: { type: "STRING", description: "Pola senar misal 16x19 atau 18x20" },
+                                        summary: { type: "STRING", description: "Analisis singkat kelebihan dan karakter raket dalam Bahasa Indonesia" }
+                                    },
+                                    required: ["name", "brand", "year", "weight", "headsize", "type", "stiffness", "swingweight", "stringPattern", "summary"]
+                                }
+                            }
+                        },
+                        required: ["searchSummary", "rackets"]
+                    }
+                }
+            };
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+                const result = await fetchWithExponentialBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const rawJson = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!rawJson) throw new Error("Format respons kosong");
+
+                const parsed = JSON.parse(rawJson);
+                renderAISearchResults(parsed.searchSummary, parsed.rackets || []);
+                showToast(`AI menemukan ${(parsed.rackets || []).length} raket yang sesuai kriteria!`, 'success');
+            } catch (error) {
+                console.error("AI Search Error:", error);
+                showToast('Gagal memanggil AI secara langsung, menampilkan rekomendasi pencocokan cerdas dari database.', 'warning');
+                // Intelligent fallback filter if offline/throttled
+                const fallbackList = racketCatalog.slice(0, 3);
+                renderAISearchResults(`Menampilkan rekomendasi raket terbaik untuk pencarian: "${query}"`, fallbackList);
+            } finally {
+                loadingEl.classList.add('hidden');
+                btn.disabled = false;
+                btn.classList.remove('opacity-60');
+            }
+        }
+
+        function renderAISearchResults(summaryText, rackets) {
+            const container = document.getElementById('aiSearchResultsContainer');
+            const summaryEl = document.getElementById('aiSearchSummaryText');
+            const badgeEl = document.getElementById('aiResultsBadge');
+            const gridEl = document.getElementById('aiSearchResultsGrid');
+
+            aiFoundRacketsCache = rackets.map((r, idx) => {
+                const cleanId = `ai-${r.brand.toLowerCase()}-${r.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${r.year}-${idx}`;
+                return {
+                    ...r,
+                    id: r.id || cleanId,
+                    year: Math.min(2026, Math.max(2010, Number(r.year) || 2023)),
+                    weight: Number(r.weight) || 300,
+                    headsize: Number(r.headsize) || 100,
+                    stiffness: Number(r.stiffness) || 64,
+                    swingweight: Number(r.swingweight) || 320,
+                    balance: r.balance || '320 mm (7 pts HL)',
+                    stringPattern: r.stringPattern || '16x19'
+                };
+            });
+
+            summaryEl.innerHTML = `<strong class="text-tennis-lime">Ringkasan AI:</strong> ${summaryText}`;
+            badgeEl.textContent = `${aiFoundRacketsCache.length} Raket Ditemukan`;
+
+            gridEl.innerHTML = aiFoundRacketsCache.map((racket, idx) => {
+                return `
+                    <div class="rounded-2xl bg-slate-950/90 border border-tennis-lime/40 p-4 flex flex-col justify-between gap-3 shadow-lg">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="text-xs font-mono font-bold text-tennis-lime">${racket.brand} • ${racket.year}</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700">${racket.type}</span>
+                            </div>
+                            <h4 class="font-display font-bold text-base text-white mb-2">${racket.name}</h4>
+                            <div class="grid grid-cols-4 gap-1.5 text-center my-2.5">
+                                <div class="bg-slate-900 p-1.5 rounded-lg border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 block">Berat</span>
+                                    <span class="font-mono font-bold text-xs text-white">${racket.weight}g</span>
+                                </div>
+                                <div class="bg-slate-900 p-1.5 rounded-lg border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 block">Head</span>
+                                    <span class="font-mono font-bold text-xs text-sky-400">${racket.headsize}"</span>
+                                </div>
+                                <div class="bg-slate-900 p-1.5 rounded-lg border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 block">RA</span>
+                                    <span class="font-mono font-bold text-xs text-emerald-400">${racket.stiffness}</span>
+                                </div>
+                                <div class="bg-slate-900 p-1.5 rounded-lg border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 block">SW</span>
+                                    <span class="font-mono font-bold text-xs text-amber-300">${racket.swingweight}</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">${racket.summary}</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80">
+                            <button onclick="addAIRacketToCatalog(${idx}, false)" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 transition flex items-center justify-center gap-1">
+                                <i data-lucide="bookmark-plus" class="w-3.5 h-3.5 text-sky-400"></i>
+                                <span>+ Simpan Katalog</span>
+                            </button>
+                            <button onclick="addAIRacketToCatalog(${idx}, true)" class="px-3 py-2 rounded-xl bg-tennis-lime hover:bg-tennis-limeDark text-xs font-display font-bold text-slate-950 transition flex items-center justify-center gap-1">
+                                <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+                                <span>+ Bandingkan</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function addAIRacketToCatalog(cacheIndex, alsoCompare = false) {
+            const racket = aiFoundRacketsCache[cacheIndex];
+            if (!racket) return;
+
+            // Check if already exists by name & year
+            let existing = racketCatalog.find(r => r.name.toLowerCase() === racket.name.toLowerCase());
+            if (!existing) {
+                racket.scores = ensureScores(racket);
+                racketCatalog.unshift(racket);
+                existing = racket;
+                showToast(`${racket.name} berhasil disimpan ke katalog utama!`, 'success');
+            }
+
+            if (alsoCompare) {
+                if (!compareIds.includes(existing.id)) {
+                    if (compareIds.length >= 4) {
+                        compareIds.pop(); // Replace last slot for smooth UX
+                    }
+                    compareIds.push(existing.id);
+                    showToast(`${existing.name} dimasukkan ke Meja Komparasi!`, 'success');
+                }
+                scrollToComparison();
+            }
+
+            refreshAllUI();
+        }
+
+        // Generate Head-to-Head AI Comparison Verdict
+        async function generateAIComparisonVerdict() {
+            const selectedRackets = compareIds.map(id => racketCatalog.find(r => r.id === id)).filter(Boolean);
+            if (selectedRackets.length < 2) {
+                showToast('Pilih minimal 2 raket di meja komparasi untuk menjalankan Analisis AI.', 'warning');
+                return;
+            }
+
+            const verdictContainer = document.getElementById('aiVerdictContainer');
+            const verdictContent = document.getElementById('aiVerdictContent');
+            verdictContainer.classList.remove('hidden');
+            verdictContent.innerHTML = `
+                <div class="flex items-center gap-3 py-4 text-tennis-lime">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                    <span>Gemini AI sedang membandingkan biomekanika, distribusi berat, headsize, dan karakter dari ${selectedRackets.length} raket...</span>
+                </div>
+            `;
+            lucide.createIcons();
+            verdictContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            const specsPrompt = selectedRackets.map((r, i) => 
+                `${i + 1}. ${r.name} (${r.brand}, ${r.year}) - Berat: ${r.weight}g, Headsize: ${r.headsize} sq.in., Tipe: ${r.type}, Stiffness: ${r.stiffness} RA, Swingweight: ${r.swingweight}, Pattern: ${r.stringPattern}`
+            ).join('\n');
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [{
+                        text: `Bandingkan secara tajam dan objektif daftar raket tenis berikut:\n${specsPrompt}\n\nBerikan analisis dalam Bahasa Indonesia yang mencakup:\n1. Perbandingan Power vs Kontrol & Spin\n2. Keamanan Lengan / Kenyamanan (Tennis Elbow) berdasarkan RA dan Berat\n3. Rekomendasi spesifik raket mana yang paling cocok untuk tipe pemain tertentu.`
+                    }]
+                }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            headline: { type: "STRING" },
+                            powerVsControl: { type: "STRING" },
+                            armComfortAnalysis: { type: "STRING" },
+                            winnerRecommendations: {
+                                type: "ARRAY",
+                                items: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        racketName: { type: "STRING" },
+                                        bestFor: { type: "STRING" }
+                                    },
+                                    required: ["racketName", "bestFor"]
+                                }
+                            }
+                        },
+                        required: ["headline", "powerVsControl", "armComfortAnalysis", "winnerRecommendations"]
+                    }
+                }
+            };
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+                const result = await fetchWithExponentialBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const rawJson = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                const parsed = JSON.parse(rawJson);
+
+                const recsHtml = (parsed.winnerRecommendations || []).map(item => `
+                    <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                        <span class="font-display font-bold text-tennis-lime text-xs block mb-0.5">${item.racketName}</span>
+                        <span class="text-xs text-slate-300">${item.bestFor}</span>
+                    </div>
+                `).join('');
+
+                verdictContent.innerHTML = `
+                    <div class="font-display font-bold text-base text-tennis-lime">${parsed.headline}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                        <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+                            <span class="text-xs font-mono uppercase text-sky-400 block mb-1">⚡ Power vs Kontrol & Spin</span>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${parsed.powerVsControl}</p>
+                        </div>
+                        <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
+                            <span class="text-xs font-mono uppercase text-emerald-400 block mb-1">💪 Kenyamanan Lengan & Biomekanika</span>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">${parsed.armComfortAnalysis}</p>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <span class="text-xs font-mono uppercase text-slate-400 block mb-2">🏆 Rekomendasi Pemain:</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">${recsHtml}</div>
+                    </div>
+                `;
+            } catch (err) {
+                console.error("AI Verdict Error:", err);
+                verdictContent.innerHTML = `<p class="text-xs text-amber-300">Tidak dapat memuat analisis AI saat ini. Pastikan koneksi aktif dan coba kembali.</p>`;
+            }
+        }
+
+        // ============================================================================
+        // 7. MANUAL CUSTOM RACKET MODAL HANDLERS
+        // ============================================================================
+        function openCustomRacketModal() {
+            document.getElementById('customRacketModal').classList.remove('hidden');
+        }
+
+        function closeCustomRacketModal() {
+            document.getElementById('customRacketModal').classList.add('hidden');
+        }
+
+        function handleCustomRacketSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('custName').value.trim();
+            const brand = document.getElementById('custBrand').value;
+            const year = parseInt(document.getElementById('custYear').value, 10) || 2024;
+            const weight = parseInt(document.getElementById('custWeight').value, 10) || 300;
+            const headsize = parseInt(document.getElementById('custHeadsize').value, 10) || 100;
+            const type = document.getElementById('custType').value;
+            const stringPattern = document.getElementById('custPattern').value.trim() || '16x19';
+            const stiffness = parseInt(document.getElementById('custRA').value, 10) || 64;
+            const swingweight = parseInt(document.getElementById('custSW').value, 10) || 320;
+            const summary = document.getElementById('custSummary').value.trim() || `Raket ${brand} (${year}) dengan karakter ${type} dan headsize ${headsize} sq. in.`;
+
+            const newRacket = {
+                id: `custom-${Date.now()}`,
+                name,
+                brand,
+                year: Math.min(2026, Math.max(2010, year)),
+                weight,
+                headsize,
+                type,
+                stiffness,
+                swingweight,
+                balance: '320 mm (7 pts HL)',
+                stringPattern,
+                summary
+            };
+            newRacket.scores = ensureScores(newRacket);
+
+            racketCatalog.unshift(newRacket);
+            if (compareIds.length < 4) {
+                compareIds.push(newRacket.id);
+            }
+
+            closeCustomRacketModal();
+            document.getElementById('customRacketForm').reset();
+            refreshAllUI();
+            showToast(`${newRacket.name} berhasil ditambahkan!`, 'success');
+        }
+
+        // ============================================================================
+        // 8. MASTER REFRESH & INITIALIZATION
+        // ============================================================================
+        function refreshAllUI() {
+            updateQuickAddDropdown();
+            renderComparisonSection();
+            applyCatalogFilters();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initYearSelectors();
+            refreshAllUI();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
